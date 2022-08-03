@@ -1,16 +1,22 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const { urlencoded } = require('express');
+const path = require('path');
 const app = express();
 const port = 3030;
 
 app.use(express.urlencoded({extended:true}));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 const users = []; //create db to store this
 
 app.get('/users', (req, res)=> {
     res.send(users);   
 });
 
+app.get('/registerUser', (req, res) => {
+    res.render('index')
+})
 app.post('/registerUser', async(req, res) => {
     try{
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
